@@ -1,23 +1,24 @@
 {%extends 'base.html'%}
 
 
+{% load crispy_forms_tags %}
 {% block content %}
-{{block.super}}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{user.profile.profile_photo.url}}" style="width:200px">
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      </div>
+      <!-- FORM HERE -->
+    </div>
+{% endblock content %}
 
-<h1>{{ user.username }}</h1>
 
-{% for profile in profiles%}
-
-
-<img src="{{profile.profile_photo.url}}" style= "width:300px"alt="">
-
-
-
-{% endfor %}
 
 
 
 
 
     
-{% endblock %}

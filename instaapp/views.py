@@ -24,6 +24,11 @@ def register(request):
 
 @login_required
 def profile(request):
-    profiles = Profile.objects.all()
-    context = {'profiles':profiles}
-    return render(request, 'users/profile.html', context)
+    # profiles = Profile.objects.all()
+    # context = {'profiles':profiles}
+    return render(request, 'users/profile.html')
+
+
+
+def updateProfile(request):
+    return render(request, 'users/update.html')
