@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ImageUploadForm
 from .models import Profile, Image
 from cloudinary.forms import cl_init_js_callbacks
+from django.core.exceptions import ObjectDoesNotExist
+
 
 # Create your views here.
 def index(request):
@@ -99,6 +101,12 @@ def update(request):
 
 
 
+def image(request,image_id):
+    try:
+        image = Image.objects.get(id = image_id)
+    except ObjectDoesNotExist:
+        raise Http404()
+    return render(request,"image.html", {"image":image})
 
 
 

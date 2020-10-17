@@ -9,6 +9,8 @@ urlpatterns=[
     url(r'^logout/',auth_views.LogoutView.as_view(template_name='users/logout.html'),name = 'logout'),
     url(r'^profile/',views.profile,name = 'profile'),
     url(r'^update/',views.update,name = 'update'),
+    url(r'^image/(\d+)',views.image,name ='image'),
+
 
 
 
