@@ -12,24 +12,30 @@
       </div>
 
 
-      <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Profile Info</legend>
-
-            {{ u_form|crispy }}
-            {{ p_form|crispy }}
-
-        </fieldset>
-        <div class="from-group">
-            <button class="btn btn-outline-info" type="submit">Update</button>
-        </div>
+      <div class="border-top pt-3">
+        <small class="text-muted">
+            <a href="{% url 'update' %}">Update Profile Details</a>
+        </small>
+    </div>
     </form>
 
 
 
 
 
+    </div>
+
+    <div class="container">
+        <div class="row">
+        {% for image in images %}
+        <div class="col-md-4 mt-4">
+          <div class="card zoom">
+                <img src="{{image.gallery_image.url}}" style="width:100%;height:56%;" class="img-responsive" alt="Image">
+          </div>
+        </div>
+        {% endfor %}
+    
+      </div>
     </div>
 {% endblock content %}
 
