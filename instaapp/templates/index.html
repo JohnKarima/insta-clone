@@ -1,4 +1,12 @@
+
 {% block content %}
+{% if messsages %}
+{% for message in messages %}
+    <div class="alert alert-{{message.tags}}">
+        {{message}}
+    </div>
+{% endfor %}
+{% endif%}
 
 <h1>Welcome to InstaClone</h1>
 
