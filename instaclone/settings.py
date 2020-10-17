@@ -13,6 +13,7 @@ import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from decouple import config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -143,3 +144,10 @@ cloudinary.config(
     api_key = '383943634483382',
     api_secret = 'vKtoKMDMMvW5PFp6nhQzlV8CvOA'
 )
+
+
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')

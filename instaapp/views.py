@@ -3,9 +3,11 @@ from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ImageUploadForm
-from .models import Profile, Image
+from .models import Profile, Image, User, Subscribers
 from cloudinary.forms import cl_init_js_callbacks
 from django.core.exceptions import ObjectDoesNotExist
+from .email import send_welcome_email
+
 
 
 # Create your views here.
@@ -39,6 +41,14 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
+            email = form.cleaned_data['email']
+
+
+            recipient = Subscribers(name = username,email =email)
+            recipient.save()
+            send_welcome_email(username,email)
+
+
             messages.success(request, f'Successfully created account created for {username}! Please log in to continue')
             return redirect('login')
     else:
@@ -110,3 +120,17 @@ def image(request,image_id):
 
 
 
+def news_today(request):
+    if request.method == 'POST':
+        form = NewsLetterForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['your_name']
+            email = form.cleaned_data['email']
+
+            recipient = NewsLetterRecipients(name = name,email =email)
+            recipient.save()
+            send_welcome_email(name,email)
+
+            HttpResponseRedirect('news_today')
+            #.................
+    return render(request, 'all-news/today-news.html', {"date": date,"news":news,"letterForm":form})
