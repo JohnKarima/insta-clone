@@ -3,8 +3,10 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from cloudinary.models import CloudinaryField
 from django.db.models.signals import pre_delete
+from PIL import Image
 import cloudinary
 import datetime as dt
+
 
 
 # Create your models here.
@@ -19,6 +21,15 @@ class Profile(models.Model):
     def save_profile(self):
         self.save()
 
+        # img = Image.open(self.image.path)
+
+        # if img.height > 300 or img.width > 300:
+        #     output_size = (300, 300)
+        #     img.thumbnail(output_size)
+        #     img.save()
+
+    
+
     def delete_profile(self):
         self.delete()
 
@@ -32,10 +43,10 @@ class Profile(models.Model):
 
 
 class Image(models.Model):
-    gallery_image = CloudinaryField('gallery_image')
-    image_name = models.CharField(max_length =30)
-    image_caption = models.CharField(max_length =70)
-    profile = models.ForeignKey(User, on_delete=models.CASCADE)
+    gallery_image = CloudinaryField('gallery_image', null=True)
+    image_name = models.CharField(max_length =30, null=True)
+    image_caption = models.CharField(max_length =70, null=True)
+    profile = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     pub_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
 
