@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, ProfileForm
+from .models import Profile
+from cloudinary.forms import cl_init_js_callbacks
 
 # Create your views here.
 def index(request):
@@ -22,4 +24,6 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    profiles = Profile.objects.all()
+    context = {'profiles':profiles}
+    return render(request, 'users/profile.html', context)

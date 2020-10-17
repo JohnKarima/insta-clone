@@ -1,10 +1,23 @@
 {%extends 'base.html'%}
-{%load crispy_forms_tags%}
 
 
 {% block content %}
 {{block.super}}
 
 <h1>{{ user.username }}</h1>
+
+{% for profile in profiles%}
+
+
+<img src="{{profile.profile_photo.url}}" style= "width:300px"alt="">
+
+
+
+{% endfor %}
+
+
+
+
+
     
 {% endblock %}

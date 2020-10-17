@@ -10,6 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     'instaapp.apps.InstaappConfig',
     'bootstrap3',
     'crispy_forms',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -84,6 +88,8 @@ DATABASES = {
 }
 
 
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -125,8 +131,15 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
 
+
+cloudinary.config(
+    cloud_name = 'dccpekr5r',
+    api_key = '383943634483382',
+    api_secret = 'vKtoKMDMMvW5PFp6nhQzlV8CvOA'
+)
