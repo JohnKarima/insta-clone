@@ -11,7 +11,5 @@ urlpatterns=[
     url(r'^update/',views.update,name = 'update'),
     url(r'^image/(\d+)',views.image,name ='image'),
 
-
-
-
-]
+    # url(r'^profile/(\d+)',views.profile,name = 'profile'),
+] 

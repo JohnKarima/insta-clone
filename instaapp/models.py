@@ -39,15 +39,16 @@ class Profile(models.Model):
         return update_profile
 
     def __str__(self):
-        return self.bio
+        return f'{self.user.username} Profile'
 
 
 class Image(models.Model):
     gallery_image = CloudinaryField('gallery_image', null=True)
     image_name = models.CharField(max_length =30, null=True)
     image_caption = models.CharField(max_length =70, null=True)
-    profile = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     pub_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True, )
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images', null=True)
 
 
     class Meta:
@@ -68,6 +69,9 @@ class Image(models.Model):
         '''
         self.delete()
 
+    def total_likes(self):
+        return self.likes.count()
+
     @classmethod
     def update_caption(cls, self, caption):
         update_cap = cls.objects.filter(id = id).update(caption = caption)
@@ -81,3 +85,24 @@ class Image(models.Model):
 class Subscribers(models.Model):
     name = models.CharField(max_length = 30)
     email = models.EmailField()
+
+
+class Comment(models.Model):
+    comment = models.TextField()
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
+    created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f'{self.user.name} Image'
+
+    class Meta:
+        ordering = ["-pk"]
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
+    followed = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers')
+
+    def __str__(self):
+        return f'{self.follower} Follow'
