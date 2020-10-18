@@ -12,6 +12,10 @@
       </div>
 
 
+      <!-- <span class="mr-5"> <strong>{{ user.profile.followers.count }}</strong> followers</span>
+                                <span class="mr-5"> <strong>{{ user.profile.following.count }}</strong> following</span> -->
+
+
       <div class="border-top pt-3">
         <small class="text-muted">
             <a href="{% url 'update' %}">Update Profile Details</a>
@@ -31,6 +35,8 @@
         <div class="col-md-4 mt-4">
           <div class="card zoom">
                 <img src="{{image.gallery_image.url}}" style="width:100%;height:56%;" class="img-responsive" alt="Image">
+                <p>{{image.image_caption}}</p>
+            <p>Posted on: {{image.pub_date}}</p> <br><br>
           </div>
         </div>
         {% endfor %}
