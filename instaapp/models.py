@@ -38,10 +38,7 @@ class Profile(models.Model):
         update_profile = cls.objects.filter(id = id).update(bio = bio)
         return update_profile
 
-    # @classmethod
-    # def search_profile(cls, name):
-    #     return cls.objects.filter(user__username__icontains=name).all()
-
+    
     @classmethod
     def search_profile(cls, search_term):
         profs = cls.objects.filter(user__username__icontains=search_term)
@@ -59,7 +56,7 @@ class Image(models.Model):
     image_name = models.CharField(max_length =30, null=True)
     image_caption = models.CharField(max_length =70, null=True)
     pub_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    likes = models.ManyToManyField(User, related_name='likes', blank=True, )
+    liked = models.ManyToManyField(User, related_name='likes', blank=True, )
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images', null=True)
 
 
@@ -82,8 +79,8 @@ class Image(models.Model):
         self.delete()
 
     @property
-    def num_likes(self):
-        return self.likes.all().count()
+    def num_liked(self):
+        return self.liked.all().count()
 
     @classmethod
     def update_caption(cls, self, caption):
@@ -97,10 +94,10 @@ class Image(models.Model):
 
         
 
-LIKE_CHOICES = {
+LIKE_CHOICES = (
     ('Like', 'Like'),
     ('Unlike', 'Unlike'),
-}
+)
 
 
 class Like(models.Model):
@@ -124,14 +121,23 @@ class Subscribers(models.Model):
 class Comment(models.Model):
     comment = models.TextField()
     image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     created = models.DateTimeField(auto_now_add=True, null=True)
 
-    def __str__(self):
-        return f'{self.user.name} Image'
+    def save_comment(self):
+        self.save()
 
-    class Meta:
-        ordering = ["-pk"]
+    def delete_comment(self):
+        self.delete()
+
+    @classmethod
+    def get_comments(cls,id):
+        comments = cls.objects.filter(image__id=id)
+        return comments
+
+
+    def __str__(self):
+        return self.comment
 
 
 class Follow(models.Model):

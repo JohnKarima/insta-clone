@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ImageUploadForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ImageUploadForm, CommentForm
 from .models import Profile, Image, User, Subscribers, Follow, Comment, Like
 from cloudinary.forms import cl_init_js_callbacks
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,7 +15,10 @@ from .email import send_welcome_email
 
 def index(request):
     images = Image.objects.all()
+    comments = Comment.objects.all()
+
     users = User.objects.exclude(id=request.user.id)
+
     if request.method == "POST":
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -38,7 +41,7 @@ def index(request):
     # else:
     #     form = ImageUploadForm(instance=request.profile.image)
 
-    return render(request, 'index.html', {"images":images[::-1], "form": form, "users": users })
+    return render(request, 'index.html', {"images":images[::-1], "form": form, "users": users, "comments": comments })
 
 def register(request):
     if request.method == "POST":
@@ -151,31 +154,29 @@ def search_results(request):
 
 
 
-# def like_post(request):
-#     user = request.user
-#     if request.method == 'POST':
-#         image_id = request.POST.get('image_id')
-#         img_obj = Image.objects.get(id = image_id)
+def like_post(request):
+    user = request.user
+    if request.method == 'POST':
+        image_id = request.POST.get('image_id')
+        img_obj = Image.objects.get(id = image_id)
 
-#         if user in img_obj.liked.all():
-#             img_obj.liked.remove(user)
-#         else:
-#             img_obj.liked.add(user)
+        if user in img_obj.liked.all():
+            img_obj.liked.remove(user)
+        else:
+            img_obj.liked.add(user)
 
-#         like, created = Like.objects.get_or_create(user = user, image_id = image_id)
+        like, created = Like.objects.get_or_create(user = user, image_id = image_id)
 
-#         if not created:
-#             if like.value == 'Like':
-#                 like.value = 'Unlike'
+        if not created:
+            if like.value == 'Like':
+                like.value = 'Unlike'
 
-#             else:
-#                 like.value = 'Like'
+            else:
+                like.value = 'Like'
 
-#         like.save()
-
-
+        like.save()
     
-#     return redirect(request, 'index.html')
+    return redirect(request, 'index.html')
 
 
 
@@ -220,3 +221,23 @@ def unfollow(request, to_unfollow):
         return redirect('user_profile', user_profile2.user.username)
 
 
+@login_required 
+def comment(request,image_id):
+        current_user=request.user
+        image = Image.objects.get(id=image_id)
+        user_profile = User.objects.get(username=current_user.username)
+        comments = Comment.objects.all()
+        
+        if request.method == 'POST':
+                form = CommentForm(request.POST, request.FILES)
+                if form.is_valid():
+                        comment = form.save(commit=False)
+                        comment.image = image
+                        comment.user = request.user.profile
+                        comment.save()
+            
+                       
+                return redirect('index')
+        else:
+                form = CommentForm()
+        return render(request, 'comment.html',locals())

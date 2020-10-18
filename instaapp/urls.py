@@ -13,7 +13,12 @@ urlpatterns=[
     url(r'^update/',views.update,name = 'update'),
     url(r'^image/(\d+)',views.image,name ='image'),
     url(r'^search/', views.search_results, name='search_results'),
-    # url(r'^like-post/',views.like_post,name = 'like-post'),
+
+    url(r'^comment/(?P<image_id>\d+)', views.comment, name='comment'),
+
+
+    
+    path('like', views.like_post,name = 'like-post'),
     path('user_profile/<username>/', views.user_profile, name='user_profile'),
     path('unfollow/<to_unfollow>', views.unfollow, name='unfollow'),
     path('follow/<to_follow>', views.follow, name='follow')

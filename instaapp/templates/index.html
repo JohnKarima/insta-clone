@@ -18,7 +18,19 @@
       <div class="card zoom">
             <a href="{% url 'image' image.id %}"><img src="{{image.gallery_image.url}}" style="width:100%;height:56%;" class="img-responsive" alt="Image"></a>
             <p>Caption: {{image.image_caption}}</p>
-            <p>Posted on: {{image.pub_date}}</p> <br><br>
+            <p>Posted on: {{image.pub_date}}</p> 
+            <a href=" {% url 'comment' image_id=image.id %}"><i class="fa fa-comment fa-2x"></i>Comment</a>
+            <br><br>
+
+            {% for comment in comments %}
+                            {% if comment.image_id == image.id%}
+                           
+                            <h5><strong>{{comment.user}}</strong> {{comment.comment}}</h5>
+                            <p>{{comment.posted | timesince}}</p>
+                            <hr>
+    
+                            {% endif %}
+                            {% endfor %}
             
       </div>
     </div>
