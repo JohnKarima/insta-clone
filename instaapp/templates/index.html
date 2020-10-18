@@ -1,5 +1,7 @@
 {%extends 'base.html'%}
 {%load crispy_forms_tags%}
+{% load static%}
+
 
 
 {% block content %}
@@ -10,13 +12,16 @@
 
 
 <div class="container">
-    <div class="row">
     {% for image in images %}
-    <div class="col-md-4 mt-4">
+    <div class="card mb-4">
         <p>{{image.user.user.username|title}}</p>
+        <img src="{{image.user.profile_photo.url}}" class="rounded-circle"
+        alt="image" width="35" height="35">
+
+        
 
       <div class="card zoom">
-            <a href="{% url 'image' image.id %}"><img src="{{image.gallery_image.url}}" style="width:100%;height:56%;" class="img-responsive" alt="Image"></a>
+            <a href="{% url 'image' image.id %}"><img src="{{image.gallery_image.url}}" style="width:50%;height:40%;" class="img-responsive" alt="Image"></a>
             <p>Caption: {{image.image_caption}}</p>
             <p>Posted on: {{image.pub_date}}</p> 
             <a href=" {% url 'comment' image_id=image.id %}"><i class="fa fa-comment fa-2x"></i>Comment</a>

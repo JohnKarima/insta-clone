@@ -5,24 +5,31 @@
 {% block content %}
 {{block.super}}
 
-
-    <div class="content-section">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1 class="text-center">Instaclone</h1>
 
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                <legend class="border-bottom mb-4 text-center">Sign up to see photos and videos from your friends.</legend>
                 {{ form|crispy }}
             </fieldset>
-            <div class="from-group">
+            <div class="from-group text-center">
                 <button class="btn btn-outline-info" type="submit">Sign Up</button>
             </div>
-        </form>
+        </form><br>
 
-        <div class="border-top pt-3">
+        <div class="border-top pt-3 text-center">
             <small class="text-muted">Already Have an Account?
-                <a href="{% url 'login' %}">Sign In</a>
+                <a href="{% url 'login' %}">Log In</a>
             </small>
         </div>
     </div>
+    <div class="col-md-4"></div>
+
+</div>
+</div>
 {% endblock %}
