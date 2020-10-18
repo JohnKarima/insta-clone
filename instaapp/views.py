@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ImageUploadForm
-from .models import Profile, Image, User, Subscribers, Follow, Comment
+from .models import Profile, Image, User, Subscribers, Follow, Comment, Like
 from cloudinary.forms import cl_init_js_callbacks
 from django.core.exceptions import ObjectDoesNotExist
 from .email import send_welcome_email
@@ -130,3 +130,46 @@ def image(request,image_id):
 
 
 
+@login_required
+def search_profile(request):
+    if 'profile' in request.GET and request.GET['profile']:
+        search_term = request.GET.get("profile")
+        searched_profiles = Profile.search_profile(search_term)
+        # print('searched_profiles')
+
+        message = f"{search_term}"
+        
+        return render(request, 'search.html', {"message":message,"searched_profiles": searched_profiles})
+
+    else:
+        message = "You haven't searched for any profile"
+
+    return render(request, 'search.html', {'message': message})
+
+
+
+def like_post(request):
+    user = request.user
+    if request.method == 'POST':
+        image_id = request.POST.get('image_id')
+        img_obj = Image.objects.get(id = image_id)
+
+        if user in img_obj.liked.all():
+            img_obj.liked.remove(user)
+        else:
+            img_obj.liked.add(user)
+
+        like, created = Like.objects.get_or_create(user = user, image_id = image_id)
+
+        if not created:
+            if like.value == 'Like':
+                like.value = 'Unlike'
+
+            else:
+                like.value = 'Like'
+
+        like.save()
+
+
+    
+    return redirect(request, 'index.html')

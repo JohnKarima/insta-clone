@@ -38,6 +38,10 @@ class Profile(models.Model):
         update_profile = cls.objects.filter(id = id).update(bio = bio)
         return update_profile
 
+    @classmethod
+    def search_profile(cls, name):
+        return cls.objects.filter(user__username__icontains=name).all()
+
     def __str__(self):
         return f'{self.user.username} Profile'
 
@@ -69,8 +73,9 @@ class Image(models.Model):
         '''
         self.delete()
 
-    def total_likes(self):
-        return self.likes.count()
+    @property
+    def num_likes(self):
+        return self.likes.all().count()
 
     @classmethod
     def update_caption(cls, self, caption):
@@ -80,6 +85,27 @@ class Image(models.Model):
     
     def __str__(self):
         return self.image_name
+
+
+        
+
+LIKE_CHOICES = {
+    ('Like', 'Like'),
+    ('Unlike', 'Unlike'),
+}
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, null = True)
+    value = models.CharField(choices=LIKE_CHOICES, default='Like', max_length=10, null = True)
+
+    def __str__(self):
+        return self.image
+
+
+
+
 
 
 class Subscribers(models.Model):
@@ -106,3 +132,4 @@ class Follow(models.Model):
 
     def __str__(self):
         return f'{self.follower} Follow'
+

@@ -17,8 +17,23 @@
 
       <div class="card zoom">
             <a href="{% url 'image' image.id %}"><img src="{{image.gallery_image.url}}" style="width:100%;height:56%;" class="img-responsive" alt="Image"></a>
-            <p>{{image.image_caption}}</p>
+            <p>Caption: {{image.image_caption}}</p>
             <p>Posted on: {{image.pub_date}}</p> <br><br>
+
+            
+
+            <form action="{% url 'index' %}" method="POST">
+                <input type="hidden" name="image.id" value="{{image.id}}">
+                {% csrf_token %}
+                {%if user not in image.liked.all%}
+                <button class="btn btn-success" type="submit">Like</button>
+                {% else %}
+            
+                <button class="btn btn-success" type="submit">Unlike</button>
+            
+                {% endif %}
+            </form>
+            <strong>{{image.liked.all.count}}Likes</strong><br><br><hr>
 
 
 

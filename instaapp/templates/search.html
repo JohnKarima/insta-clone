@@ -1,0 +1,48 @@
+{%extends 'base.html'%} 
+{% block content %}
+
+
+<style>
+    .zoom {
+      transition: transform .2s; 
+    }
+    
+    .zoom:hover {
+      transform: scale(1.02); 
+      border: 3px solid #298505;
+      overflow: hidden;  
+    }
+    </style>
+
+
+
+<div class="container">
+
+  <div class="row text-center">
+    {% if searched_profiles%}
+      <h2>Found {{ searched_profiles|length }} of searched term {{message}}</h2>
+    {% else %}
+      <h2> Found 0 images for the search term {{message}}</h2>
+    {% endif %}
+
+  </div>
+
+  <div class="row">
+
+  {% if searched_profiles %}
+  <div class="container">
+    <div class="row">
+    {% for searched_profiles in searched_profiles %}
+    <div class="col-md-4 mt-3">
+      <div class="card zoom">
+            <a href="{% url 'image' image.id %}"><img src="{{image.gallery_image.url}}" style="width:100%;height:56%;" class="img-responsive" alt="Image"></a>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}
