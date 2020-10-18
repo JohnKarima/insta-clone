@@ -131,15 +131,18 @@ def image(request,image_id):
 
 
 @login_required
-def search_profile(request):
-    if 'profile' in request.GET and request.GET['profile']:
+def search_results(request):
+
+    if 'profile' in request.GET and request.GET["profile"]:
+
         search_term = request.GET.get("profile")
         searched_profiles = Profile.search_profile(search_term)
         # print('searched_profiles')
 
         message = f"{search_term}"
         
-        return render(request, 'search.html', {"message":message,"searched_profiles": searched_profiles})
+        
+        return render(request, 'search.html', {"message":message,"profiles": searched_profiles})
 
     else:
         message = "You haven't searched for any profile"
