@@ -15,10 +15,13 @@ from .email import send_welcome_email
 
 def index(request):
     images = Image.objects.all()
+    users = User.objects.exclude(id=request.user.id)
     if request.method == "POST":
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            image = form.save(commit = False)
+            image.user = request.user.profile
+            image.save()
             messages.success(request, f'Successfully uploaded your pic!')
             return redirect('index')
     else:
@@ -35,7 +38,7 @@ def index(request):
     # else:
     #     form = ImageUploadForm(instance=request.profile.image)
 
-    return render(request, 'index.html', {"images":images[::-1], "form": form })
+    return render(request, 'index.html', {"images":images[::-1], "form": form, "users": users })
 
 def register(request):
     if request.method == "POST":
@@ -59,12 +62,16 @@ def register(request):
 
 @login_required
 def profile(request):
-    images = Image.objects.all()
+    # images = Image.objects.all()
+    # images = request.user.profile.images.all()
+    # images = request.user.images.all()
+
+
     images = request.user.profile.images.all()
 
-    # if request.method == "POST":   
+    # if request.method == "POST":
     #     u_form = UserUpdateForm(request.POST, instance=request.user)
-    #     p_form = ProfileUpdateForm(request.POST, request.FILES, 
+    #     p_form = ProfileUpdateForm(request.POST, request.FILES,
     #     instance=request.user.profile)
 
     #     if u_form.is_valid() and p_form.is_valid():
@@ -73,15 +80,15 @@ def profile(request):
     #         messages.success(request, f'Successfully updated your account!')
     #         return redirect('profile')
 
-    
-    # else:   
+
+    # else:
     #     u_form = UserUpdateForm(instance=request.user)
     #     p_form = ProfileUpdateForm(instance=request.user.profile)
 
     # context = {
     #     'u_form': u_form,
     #     'p_form': p_form
-    # }   
+    # }
 
     return render(request, 'users/profile.html', {"images":images[::-1]})
 
@@ -89,9 +96,9 @@ def profile(request):
 
 @login_required
 def update(request):
-    if request.method == "POST":   
+    if request.method == "POST":
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, request.FILES, 
+        p_form = ProfileUpdateForm(request.POST, request.FILES,
         instance=request.user.profile)
 
         if u_form.is_valid() and p_form.is_valid():
@@ -100,8 +107,8 @@ def update(request):
             messages.success(request, f'Successfully updated your account!')
             return redirect('profile')
 
-    
-    else:   
+
+    else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 

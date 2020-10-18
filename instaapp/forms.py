@@ -30,6 +30,10 @@ class ImageUploadForm(forms.ModelForm):
         model = Image
         fields = ['gallery_image', 'image_name', 'image_caption' ]
 
+    def form_valid(self, form):
+        form.instance.user = self.request.profile
+        return super().form_valid(form)
+
 class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,3 +43,4 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('comment',)
+  
