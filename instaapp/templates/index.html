@@ -22,19 +22,7 @@
 
             
 
-            <form action="{% url 'index' %}" method="POST">
-                <input type="hidden" name="image.id" value="{{image.id}}">
-                {% csrf_token %}
-                {%if user not in image.liked.all%}
-                <button class="btn btn-success" type="submit">Like</button>
-                {% else %}
             
-                <button class="btn btn-success" type="submit">Unlike</button>
-            
-                {% endif %}
-            </form>
-            <strong>{{image.liked.all.count}}Likes</strong><br><br><hr>
-
 
 
 

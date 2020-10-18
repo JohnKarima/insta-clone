@@ -148,28 +148,28 @@ def search_profile(request):
 
 
 
-def like_post(request):
-    user = request.user
-    if request.method == 'POST':
-        image_id = request.POST.get('image_id')
-        img_obj = Image.objects.get(id = image_id)
+# def like_post(request):
+#     user = request.user
+#     if request.method == 'POST':
+#         image_id = request.POST.get('image_id')
+#         img_obj = Image.objects.get(id = image_id)
 
-        if user in img_obj.liked.all():
-            img_obj.liked.remove(user)
-        else:
-            img_obj.liked.add(user)
+#         if user in img_obj.liked.all():
+#             img_obj.liked.remove(user)
+#         else:
+#             img_obj.liked.add(user)
 
-        like, created = Like.objects.get_or_create(user = user, image_id = image_id)
+#         like, created = Like.objects.get_or_create(user = user, image_id = image_id)
 
-        if not created:
-            if like.value == 'Like':
-                like.value = 'Unlike'
+#         if not created:
+#             if like.value == 'Like':
+#                 like.value = 'Unlike'
 
-            else:
-                like.value = 'Like'
+#             else:
+#                 like.value = 'Like'
 
-        like.save()
+#         like.save()
 
 
     
-    return redirect(request, 'index.html')
+#     return redirect(request, 'index.html')
