@@ -32,7 +32,22 @@
   {% if profiles %}
   <div class="container">
     <div class="row">
-    
+    {% for profile in profiles %}
+    <div class="col-md-4 mt-3">
+      <div class="card zoom">
+           <img src="{{profile.user.profile.profile_photo.url}}" style="width:200px">
+        <div class="media-body">
+          <h2 class="account-heading">{{ profile.user.username }}</h2>
+          <p class="text-secondary">{{ profile.user.email }}</p>
+        </div>
+      </div>
+
+
+      <span class="mr-5"> <strong>{{ profile.user.profile.followers.count }}</strong> followers</span>
+                                <span class="mr-5"> <strong>{{ profile.user.profile.following.count }}</strong> following</span>
+      </div>
+    </div>
+    {% endfor %}
 
   </div>
 </div>
