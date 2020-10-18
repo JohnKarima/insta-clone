@@ -21,5 +21,4 @@ urlpatterns=[
 
 
 
-    # url(r'^profile/(\d+)',views.profile,name = 'profile'),
 ] 

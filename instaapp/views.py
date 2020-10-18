@@ -200,6 +200,15 @@ def user_profile(request, username):
     return render(request, 'users/user_profile.html', params)
 
 
+
+def follow(request, to_follow):
+    if request.method == 'GET':
+        user_profile3 = Profile.objects.get(pk=to_follow)
+        follow_s = Follow(follower=request.user.profile, followed=user_profile3)
+        follow_s.save()
+        return redirect('user_profile', user_profile3.user.username)
+
+
 def unfollow(request, to_unfollow):
     if request.method == 'GET':
         user_profile2 = Profile.objects.get(pk=to_unfollow)
@@ -208,9 +217,3 @@ def unfollow(request, to_unfollow):
         return redirect('user_profile', user_profile2.user.username)
 
 
-def follow(request, to_follow):
-    if request.method == 'GET':
-        user_profile3 = Profile.objects.get(pk=to_follow)
-        follow_s = Follow(follower=request.user.profile, followed=user_profile3)
-        follow_s.save()
-        return redirect('user_profile', user_profile3.user.username)
