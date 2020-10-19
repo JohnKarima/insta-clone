@@ -14,7 +14,6 @@
         <div class="col-mb-4 mt-3">
         {% if profiles %}
         {% for profile in profiles %}
-        <a href="{% url 'user_profile' user.username  %}">
         <div class="card">          
            <img src="{{profile.user.profile.profile_photo.url}}" style="width:200px">
            <div class="media-body">
@@ -23,7 +22,7 @@
         </div>
         <span class="mr-5"> <strong>{{ profile.user.profile.followers.count }}</strong> followers</span>
         <span class="mr-5"> <strong>{{ profile.user.profile.following.count }}</strong> following</span>
-        </div></a><br>
+        </div><br>
         {% endfor %}
         </div>
     </div>
