@@ -6,7 +6,7 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ImageUpl
 from .models import Profile, Image, User, Subscribers, Follow, Comment, Like
 from cloudinary.forms import cl_init_js_callbacks
 from django.core.exceptions import ObjectDoesNotExist
-from .email import send_welcome_email
+# from .email import send_welcome_email
 
 @login_required
 def index(request):
