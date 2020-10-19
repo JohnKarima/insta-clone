@@ -7,11 +7,6 @@ from PIL import Image
 import cloudinary
 import datetime as dt
 
-
-
-# Create your models here.
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,  related_name='profile')
     bio = models.TextField()
@@ -21,15 +16,6 @@ class Profile(models.Model):
     def save_profile(self):
         self.save()
 
-        # img = Image.open(self.image.path)
-
-        # if img.height > 300 or img.width > 300:
-        #     output_size = (300, 300)
-        #     img.thumbnail(output_size)
-        #     img.save()
-
-    
-
     def delete_profile(self):
         self.delete()
 
@@ -37,19 +23,14 @@ class Profile(models.Model):
     def update_bio(cls,id, bio):
         update_profile = cls.objects.filter(id = id).update(bio = bio)
         return update_profile
-
     
     @classmethod
     def search_profile(cls, search_term):
         profs = cls.objects.filter(user__username__icontains=search_term)
         return profs
 
-
-
-
     def __str__(self):
         return f'{self.user.username} Profile'
-
 
 class Image(models.Model):
     gallery_image = CloudinaryField('gallery_image', null=True)
@@ -58,7 +39,6 @@ class Image(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     liked = models.ManyToManyField(User, related_name='likes', blank=True, )
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images', null=True)
-
 
     class Meta:
         '''
@@ -87,18 +67,13 @@ class Image(models.Model):
         update_cap = cls.objects.filter(id = id).update(caption = caption)
         return update_cap
 
-    
     def __str__(self):
         return self.image_name
-
-
-        
 
 LIKE_CHOICES = (
     ('Like', 'Like'),
     ('Unlike', 'Unlike'),
 )
-
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
@@ -108,15 +83,9 @@ class Like(models.Model):
     def __str__(self):
         return self.image
 
-
-
-
-
-
 class Subscribers(models.Model):
     name = models.CharField(max_length = 30)
     email = models.EmailField()
-
 
 class Comment(models.Model):
     comment = models.TextField()
@@ -135,10 +104,8 @@ class Comment(models.Model):
         comments = cls.objects.filter(image__id=id)
         return comments
 
-
     def __str__(self):
         return self.comment
-
 
 class Follow(models.Model):
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
@@ -146,4 +113,3 @@ class Follow(models.Model):
 
     def __str__(self):
         return f'{self.follower} Follow'
-

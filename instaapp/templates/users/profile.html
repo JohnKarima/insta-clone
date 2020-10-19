@@ -20,6 +20,7 @@
         </div>
         </div>
     </div>
+</div>
 <div class="container">
     <div class="row">
         {% for image in images %}
@@ -28,11 +29,11 @@
             <a href="{% url 'image' image.id %}">
                 <img src="{{image.gallery_image.url}}" style="width:100%;height:56%;" class="img-responsive" alt="Image"></a><br><hr>
                 <p class="pl-2"><strong>Caption:</strong> {{image.image_caption}}</p>
-                <p class="pl-2"><strong>Posted on:</strong> {{image.pub_date}}</p> <br><br>
+                <p class="pl-2"><strong>Posted on:</strong> {{image.pub_date}}</p><br><br>
+                <p class="pl-2"><strong>Comments:</strong></p>
                 {% for comment in comments %}
                     {% if comment.image_id == image.id%}
-                    <p><strong>Comments:</strong></p>
-                    <p class="pl-2"><strong>{{comment.user}}:</strong> {{comment.comment}}</p>
+                    <p class="pl-2"><strong>{{comment.user}}:</strong>{{comment.comment}}</p>
                     <p>{{comment.posted | timesince}}</p><hr>
                     {% endif %}
                 {% endfor %}
@@ -41,13 +42,5 @@
         </div>
         {% endfor %}
     </div>
-</div>
+</div><br><br><br><br><br><br>
 {% endblock %}
-
-
-
-
-
-
-
-    
