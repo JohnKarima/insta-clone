@@ -34,7 +34,7 @@ def register(request):
             email = form.cleaned_data['email']
             recipient = Subscribers(name = username,email =email)
             recipient.save()
-            send_welcome_email(username,email)
+            # send_welcome_email(username,email)
             messages.success(request, f'Successfully created account created for {username}! Please log in to continue')
             return redirect('login')
     else:
