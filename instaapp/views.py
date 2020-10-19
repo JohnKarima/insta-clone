@@ -71,6 +71,8 @@ def profile(request):
 
 
     images = request.user.profile.images.all()
+    comments = Comment.objects.all()
+
 
     # if request.method == "POST":
     #     u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -93,7 +95,7 @@ def profile(request):
     #     'p_form': p_form
     # }
 
-    return render(request, 'users/profile.html', {"images":images[::-1]})
+    return render(request, 'users/profile.html', {"images":images[::-1], "comments": comments})
 
 
 
